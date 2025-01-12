@@ -1,0 +1,46 @@
+﻿@model Personal_Library.ViewModels.BookDetailViewModel
+
+<h1>@Model.Title</h1>
+<img src="@Model.Image" alt="@Model.Title" style="width: 200px;" />
+<p><strong>ISBN:</strong> @Model.ISBN</p>
+<p><strong>價格:</strong> @Model.Price</p>
+<p><strong>出版社:</strong> @Model.Publisher</p>
+<p><strong>出版日期:</strong> @Model.PublishDate</p>
+<p><strong>語言:</strong> @Model.Language</p>
+
+<h3>人員資訊</h3>
+<ul>
+    <li>
+        <strong>作者:</strong> @if (Model.Authors != null && Model.Authors.Any())
+        {
+            @string.Join(", ", Model.Authors)
+        }
+        else
+        {
+            <span>無</span>
+        }
+    </li>
+    <li>
+        <strong>原作者:</strong> @if (Model.OriginalAuthors != null && Model.OriginalAuthors.Any())
+        {
+            @string.Join(", ", Model.OriginalAuthors)
+        }
+        else
+        {
+            <span>無</span>
+        }
+    </li>
+    <li>
+        <strong>譯者:</strong> @if (Model.Translators != null && Model.Translators.Any())
+        {
+            @string.Join(", ", Model.Translators)
+        }
+        else
+        {
+            <span>無</span>
+        }
+    </li>
+</ul>
+
+<h3>詳細資訊</h3>
+

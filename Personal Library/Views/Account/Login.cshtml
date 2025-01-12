@@ -1,0 +1,125 @@
+﻿@model Personal_Library.Models.LoginViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>登入</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            width: 100%;
+            background-color: #003366;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                color: #333;
+                font-weight: bold;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-size: 16px;
+            }
+
+        .login-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: #003366;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+            .login-submit:hover {
+                background-color: #004480;
+            }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+            .register-link a {
+                color: #003366;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+                .register-link a:hover {
+                    text-decoration: underline;
+                }
+    </style>
+</head>
+<body>
+    <div class="header">
+        登入頁面
+    </div>
+
+    <div class="login-container">
+        <h2>登入</h2>
+        @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                @Html.LabelFor(m => m.Account, "帳號")
+                @Html.TextBoxFor(m => m.Account, new { @class = "form-control", required = "required" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password, "密碼")
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", required = "required" })
+            </div>
+            <button type="submit" class="login-submit">登入</button>
+        }
+        <div class="register-link">
+            還沒有帳號？<a href="@Url.Action("Register", "Account")">申請帳號</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - 個人書庫</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            background-color: #003366;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+            .header .logo {
+                font-size: 24px;
+                text-decoration: none;
+                color: white;
+            }
+
+            .header .login-area {
+                display: flex;
+                align-items: center;
+            }
+
+            .header .btn {
+                background-color: #004480;
+                color: white;
+                text-decoration: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+                transition: background-color 0.3s ease;
+                margin-left: 10px;
+            }
+
+                .header .btn:hover {
+                    background-color: #005599;
+                }
+
+        .menu-toggle {
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #003366;
+            color: white;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .sidebar ul {
+                list-style-type: none;
+                padding: 0;
+            }
+
+                .sidebar ul li {
+                    margin: 15px 0;
+                }
+
+                    .sidebar ul li a {
+                        color: white;
+                        text-decoration: none;
+                        font-size: 18px;
+                        display: flex;
+                        align-items: center;
+                    }
+
+                        .sidebar ul li a:hover {
+                            text-decoration: underline;
+                        }
+
+        .main-content {
+            margin-left: 0;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+
+            .main-content.shifted {
+                margin-left: 250px;
+            }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+        .login-submit {
+            width: 100%;
+            padding: 10px;
+            background-color: #003366;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            .login-submit:hover {
+                background-color: #004480;
+            }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
+        <a href="/" class="logo">個人書庫</a>
+        <div class="login-area">
+            @if (!string.IsNullOrEmpty(Context.Session.GetString("Account")))
+            {
+                <span>您好，@Context.Session.GetString("Account")</span>
+                <a href="/Account/Logout" class="btn">登出</a>
+            }
+            else
+            {
+                <a href="/Account/Login" class="btn">登入</a>
+            }
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a href="/Library"><i class="fas fa-book"></i> 個人書庫</a></li>
+            <li><a href="/Library/AddBook"><i class="fas fa-plus"></i> 新增書籍</a></li>
+            <li><a href="/Account/Profile"><i class="fas fa-user"></i> 個人資料</a></li>
+            <li><a href="/Settings"><i class="fas fa-cog"></i> 設定</a></li>
+            <li><a href="/Help"><i class="fas fa-question-circle"></i> 幫助</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        @RenderBody()
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const content = document.querySelector('.main-content');
+            sidebar.classList.toggle('active');
+            content.classList.toggle('shifted');
+        }
+    </script>
+</body>
+</html>

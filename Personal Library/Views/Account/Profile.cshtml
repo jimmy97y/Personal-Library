@@ -1,0 +1,77 @@
+﻿@model Personal_Library.Models.Users
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>個人資料</title>
+    <style>
+        .profile-container {
+            width: 60%;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .profile-header h2 {
+            margin-bottom: 10px;
+        }
+        .profile-img {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .profile-img img {
+            border-radius: 50%;
+            max-width: 150px;
+        }
+        .profile-details {
+            margin-top: 20px;
+        }
+        .profile-details label {
+            font-weight: bold;
+        }
+        .profile-details p {
+            margin: 5px 0 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h2>個人資料</h2>
+        </div>
+        <div class="profile-img">
+            @if (!string.IsNullOrEmpty(Model.Avatar))
+            {
+                <img src="@Model.Avatar" alt="個人頭像" />
+            }
+            else
+            {
+                <img src="https://via.placeholder.com/150" alt="預設頭像" />
+            }
+        </div>
+        <div class="profile-details">
+            <div>
+                <label>使用者名稱:</label>
+                <p>@Model.UserName</p>
+            </div>
+            <div>
+                <label>帳號:</label>
+                <p>@Model.Account</p>
+            </div>
+            <div>
+                <label>電子郵件:</label>
+                <p>@Model.Email</p>
+            </div>
+            <div>
+                <label>性別:</label>
+                <p>@Model.Gender</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

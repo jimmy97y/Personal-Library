@@ -1,0 +1,26 @@
+﻿@model List<Personal_Library.Models.Book>
+
+<div class="container">
+    <h1>我的書庫</h1>
+
+    @if (Model == null || !Model.Any())
+
+    {
+        <p>您的書庫目前是空的。</p>
+        <a href="/Library/AddBook" class="btn btn-primary">新增書籍收藏</a>
+    }
+
+    else
+
+    {
+        <ul>
+            @foreach (var book in Model)
+
+            {
+                <li>
+                    <strong>@book.Title</strong> - ISBN: @book.ISBN
+                </li>
+            }
+        </ul>
+    }
+</div>

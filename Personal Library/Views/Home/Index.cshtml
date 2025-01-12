@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "搜尋書籍";
+}
+
+<h1>搜尋書籍</h1>
+
+<!-- 搜尋表單 -->
+<form id="searchForm">
+    <label for="keyword">關鍵字：</label>
+    <input type="text" id="keyword" placeholder="請輸入關鍵字" required />
+    <button type="submit">搜尋</button>
+</form>
+
+<!-- 搜尋結果 -->
+<div id="results"></div>
+
+<script>
+    document.getElementById("searchForm").addEventListener("submit", async function (e) {
+        e.preventDefault(); // 防止表單提交刷新頁面
+
+        // 獲取關鍵字
+        const keyword = document.getElementById("keyword").value.trim();
+        if (!keyword) {
+            alert("請輸入關鍵字！");
+            return;
+        }
+
+        // 呼叫 API 獲取書籍列表
+        const apiUrl = `http://127.0.0.1:5050/api/books/search?keyword=${encodeURIComponent(keyword)}`;
+        try {
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error("搜尋失敗");
+            }
+
+            const data = await response.json();
+
+            // 顯示搜尋結果
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = ""; // 清空之前的結果
+
+            if (data.books && data.books.length > 0) {
+                data.books.forEach((book) => {
+                    const bookDiv = document.createElement("div");
+                    bookDiv.className = "book-item";
+                    bookDiv.setAttribute("productId", book.productId);
+                    bookDiv.innerHTML = `
+                            <h3>${book.title}</h3>
+                            <p><strong>作者：</strong> ${book.author.join(", ")}</p>
+                            <p><strong>出版社：</strong> ${book.publisher}</p>
+                            <img src="${book.image}" alt="${book.title}" style="width: 100px;" />
+                            <hr />
+                        `;
+                    bookDiv.addEventListener("click", () => {
+                        // 點擊跳轉到書籍詳細頁面
+                        window.location.href = `/Home/BookDetails?productId=${book.productId}`;
+                    });
+                    resultsDiv.appendChild(bookDiv);
+                });
+            } else {
+                resultsDiv.innerHTML = "<p>找不到符合條件的書籍。</p>";
+            }
+        } catch (error) {
+            document.getElementById("results").innerHTML = `<p>發生錯誤：${error.message}</p>`;
+        }
+    });
+</script>

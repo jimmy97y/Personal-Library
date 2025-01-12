@@ -1,0 +1,139 @@
+﻿@model Personal_Library.ViewModels.BookSearchViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>新增書籍</title>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group label {
+                font-weight: bold;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .form-group input[type="text"],
+            .form-group button {
+                width: 100%;
+                padding: 10px;
+                font-size: 16px;
+                border-radius: 4px;
+                border: 1px solid #ddd;
+            }
+
+            .form-group button {
+                background-color: #003366;
+                color: white;
+                font-weight: bold;
+                cursor: pointer;
+                border: none;
+            }
+
+                .form-group button:hover {
+                    background-color: #004480;
+                }
+
+        .search-results {
+            margin-top: 20px;
+        }
+
+            .search-results .book-item {
+                display: flex;
+                margin-bottom: 20px;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+            }
+
+                .search-results .book-item img {
+                    max-width: 100px;
+                    max-height: 150px;
+                    margin-right: 20px;
+                }
+
+            .search-results .book-details {
+                flex: 1;
+            }
+
+                .search-results .book-details h4 {
+                    margin: 0;
+                    font-size: 18px;
+                }
+
+                .search-results .book-details p {
+                    margin: 5px 0;
+                }
+
+                .search-results .book-details button {
+                    margin-top: 10px;
+                    padding: 8px 16px;
+                    background-color: #28a745;
+                    color: white;
+                    font-weight: bold;
+                    border: none;
+                    cursor: pointer;
+                    border-radius: 4px;
+                }
+
+                    .search-results .book-details button:hover {
+                        background-color: #218838;
+                    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>新增書籍到個人書庫</h2>
+        <form method="get" action="/Library/AddBook">
+            <div class="form-group">
+                <label for="keyword">書籍關鍵字</label>
+                <input type="text" id="keyword" name="keyword" value="@Model?.Keyword" placeholder="輸入書籍名稱、作者或 ISBN" required />
+            </div>
+            <div class="form-group">
+                <button type="submit">搜尋書籍</button>
+            </div>
+        </form>
+
+        @if (Model.SearchResults != null && Model.SearchResults.Any())
+
+        {
+            <div class="search-results">
+                @foreach (var book in Model.SearchResults)
+
+                {
+                    <div class="book-item">
+                        <img src="@book.Image" alt="@book.Title" />
+                        <div class="book-details">
+                            <h4>@book.Title</h4>
+                            <p>作者: @string.Join(", ", book.Author)</p>
+                            <p>出版社: @book.Publisher</p>
+                            <form method="post" action="/Library/AddBook">
+                                <input type="hidden" name="isbn" value="@book.ProductId" />
+                                <button type="submit">加入書庫</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        else if (!string.IsNullOrEmpty(Model.Keyword))
+
+        {
+            <p>未找到與 "@Model.Keyword" 相關的書籍。</p>
+        }
+
+    </div>
+</body>
+</html>
